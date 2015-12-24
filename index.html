@@ -8,27 +8,25 @@
 <title>Digital Synth WRA32-R</title>
 <script src="./opal.min.js"></script>
 <script src="./opal-parser.min.js"></script>
-<script type="text/javascript">Opal.load('opal-parser')</script>
-<script>
-var audioContext = new AudioContext();
-var SAMPLE_RATE = audioContext.sampleRate;
-var scriptProcessor = audioContext.createScriptProcessor();
-var BUFFER_SIZE = scriptProcessor.bufferSize;
-
-function onAudioProcess(event) {
-  var bufferL = event.outputBuffer.getChannelData(0);
-  var bufferR = event.outputBuffer.getChannelData(1);
-  for (var i = 0; i < BUFFER_SIZE; i++) {
-    bufferL[i] = bufferR[i] = (Math.random() - 0.5) / 10.0;
-  }
-}
-</script>
-<script>
-scriptProcessor.onaudioprocess = onAudioProcess;
-scriptProcessor.connect(audioContext.destination);
-</script>
+<script>Opal.load('opal-parser');</script>
 <script type="text/ruby">
-puts "hello"
+%x{
+  var audioContext = new AudioContext();
+  var SAMPLE_RATE = audioContext.sampleRate;
+  var scriptProcessor = audioContext.createScriptProcessor();
+  var BUFFER_SIZE = scriptProcessor.bufferSize;
+
+  function onAudioProcess(event) {
+    var bufferL = event.outputBuffer.getChannelData(0);
+    var bufferR = event.outputBuffer.getChannelData(1);
+    for (var i = 0; i < BUFFER_SIZE; i++) {
+      bufferL[i] = bufferR[i] = (#{rand} - 0.5) / 10.0;
+    }
+  }
+
+  scriptProcessor.onaudioprocess = onAudioProcess;
+  scriptProcessor.connect(audioContext.destination);
+}
 </script>
 </head>
 <body>
