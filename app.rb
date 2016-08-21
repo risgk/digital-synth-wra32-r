@@ -9,17 +9,19 @@ class Synth
   def initialize
     @courseTune  = 64
     @fineTune    = 64
-    @noteNumber  = 84
+    @noteNumber  = 96
     @phase       = 0
     @freq        = 0
     @overtone    = 1
 
+=begin
     @waveTablesSawtooth = []
     generateWaveTable(@waveTablesSawtooth, 1, lambda {|n, k|
       (2.0 / Math::PI) * Math::sin((2.0 * Math::PI) *
                                   ((n + 0.5) / SAMPLES_PER_CYCLE) * k) / k
     })
     @waveTables  = @waveTablesSawtooth
+=end
 
     @freqTableC4toB4 = []
     generatefreqTable

@@ -6,56 +6,51 @@
   function $rb_divide(lhs, rhs) {
     return (typeof(lhs) === 'number' && typeof(rhs) === 'number') ? lhs / rhs : lhs['$/'](rhs);
   }
-  function $rb_times(lhs, rhs) {
-    return (typeof(lhs) === 'number' && typeof(rhs) === 'number') ? lhs * rhs : lhs['$*'](rhs);
-  }
   function $rb_plus(lhs, rhs) {
     return (typeof(lhs) === 'number' && typeof(rhs) === 'number') ? lhs + rhs : lhs['$+'](rhs);
   }
   function $rb_ge(lhs, rhs) {
     return (typeof(lhs) === 'number' && typeof(rhs) === 'number') ? lhs >= rhs : lhs['$>='](rhs);
   }
+  function $rb_times(lhs, rhs) {
+    return (typeof(lhs) === 'number' && typeof(rhs) === 'number') ? lhs * rhs : lhs['$*'](rhs);
+  }
   function $rb_gt(lhs, rhs) {
     return (typeof(lhs) === 'number' && typeof(rhs) === 'number') ? lhs > rhs : lhs['$>'](rhs);
   }
   var self = Opal.top, $scope = Opal, nil = Opal.nil, $breaker = Opal.breaker, $slice = Opal.slice, $klass = Opal.klass, $range = Opal.range, $gvars = Opal.gvars;
 
-  Opal.add_stubs(['$-', '$/', '$generateWaveTable', '$lambda', '$*', '$sin', '$+', '$generatefreqTable', '$updateFreq', '$>=', '$floor', '$[]', '$%', '$to_f', '$private', '$each', '$call', '$[]=', '$**', '$>', '$new']);
+  Opal.add_stubs(['$-', '$/', '$generatefreqTable', '$updateFreq', '$+', '$>=', '$*', '$floor', '$[]', '$%', '$to_f', '$private', '$each', '$call', '$[]=', '$**', '$>', '$new']);
   Opal.cdecl($scope, 'SAMPLING_RATE', SAMPLE_RATE);
   Opal.cdecl($scope, 'MAX_FREQ', $rb_minus(($rb_divide($scope.get('SAMPLING_RATE'), 2)), 1));
   (function($base, $super) {
     function $Synth(){};
     var self = $Synth = $klass($base, $super, 'Synth', $Synth);
 
-    var def = self.$$proto, $scope = self.$$scope, TMP_2, TMP_3, TMP_7, TMP_9, TMP_10;
+    var def = self.$$proto, $scope = self.$$scope, TMP_1, TMP_2, TMP_6, TMP_8, TMP_9;
 
-    def.waveTablesSawtooth = def.phase = def.freq = def.waveTables = def.overtone = def.noteNumber = def.courseTune = def.freqTableC4toB4 = def.fineTune = nil;
+    def.phase = def.freq = def.waveTables = def.overtone = def.noteNumber = def.courseTune = def.freqTableC4toB4 = def.fineTune = nil;
     Opal.cdecl($scope, 'CYCLE_RESOLUTION', 4294967296);
 
     Opal.cdecl($scope, 'MAX_OVERTONE', 127);
 
     Opal.cdecl($scope, 'SAMPLES_PER_CYCLE', 256);
 
-    Opal.defn(self, '$initialize', TMP_2 = function ːinitialize() {
-      var $a, $b, TMP_1, self = this;
+    Opal.defn(self, '$initialize', TMP_1 = function ːinitialize() {
+      var self = this;
 
       self.courseTune = 64;
       self.fineTune = 64;
-      self.noteNumber = 84;
+      self.noteNumber = 96;
       self.phase = 0;
       self.freq = 0;
       self.overtone = 1;
-      self.waveTablesSawtooth = [];
-      self.$generateWaveTable(self.waveTablesSawtooth, 1, ($a = ($b = self).$lambda, $a.$$p = (TMP_1 = function(n, k){var self = TMP_1.$$s || this;
-if (n == null) n = nil;if (k == null) k = nil;
-      return $rb_divide($rb_times(($rb_divide(2.0, (($scope.get('Math')).$$scope.get('PI')))), $scope.get('Math').$sin($rb_times($rb_times(($rb_times(2.0, (($scope.get('Math')).$$scope.get('PI')))), ($rb_divide(($rb_plus(n, 0.5)), $scope.get('SAMPLES_PER_CYCLE')))), k))), k)}, TMP_1.$$s = self, TMP_1.$$arity = 2, TMP_1), $a).call($b));
-      self.waveTables = self.waveTablesSawtooth;
       self.freqTableC4toB4 = [];
       self.$generatefreqTable();
       return self.$updateFreq();
-    }, TMP_2.$$arity = 0);
+    }, TMP_1.$$arity = 0);
 
-    Opal.defn(self, '$clock', TMP_3 = function ːclock() {
+    Opal.defn(self, '$clock', TMP_2 = function ːclock() {
       var $a, self = this, x = nil, f = nil, currIndex = nil, nextIndex = nil, waveTable = nil, currData = nil, nextData = nil, nextWeight = nil, currWeight = nil, level = nil;
 
       self.phase = $rb_plus(self.phase, self.freq);
@@ -78,39 +73,39 @@ if (n == null) n = nil;if (k == null) k = nil;
       nextWeight = self.phase['$%'](($rb_divide($scope.get('CYCLE_RESOLUTION'), $scope.get('SAMPLES_PER_CYCLE'))));
       currWeight = $rb_minus(($rb_divide($scope.get('CYCLE_RESOLUTION'), $scope.get('SAMPLES_PER_CYCLE'))), nextWeight);
       return level = $rb_divide(($rb_plus(($rb_times(currData, currWeight)), ($rb_times(nextData, nextWeight)))), ($rb_divide($scope.get('CYCLE_RESOLUTION'), $scope.get('SAMPLES_PER_CYCLE'))).$to_f());
-    }, TMP_3.$$arity = 0);
+    }, TMP_2.$$arity = 0);
 
     self.$private();
 
-    Opal.defn(self, '$generateWaveTable', TMP_7 = function ːgenerateWaveTable(waveTables, amp, f) {
-      var $a, $b, TMP_4, self = this;
+    Opal.defn(self, '$generateWaveTable', TMP_6 = function ːgenerateWaveTable(waveTables, amp, f) {
+      var $a, $b, TMP_3, self = this;
 
-      return ($a = ($b = ($range(0, ($rb_minus(($rb_divide(($rb_plus($scope.get('MAX_OVERTONE'), 1)), 2)), 1)), false))).$each, $a.$$p = (TMP_4 = function(m){var self = TMP_4.$$s || this, $c, $d, TMP_5, waveTable = nil;
+      return ($a = ($b = ($range(0, ($rb_minus(($rb_divide(($rb_plus($scope.get('MAX_OVERTONE'), 1)), 2)), 1)), false))).$each, $a.$$p = (TMP_3 = function(m){var self = TMP_3.$$s || this, $c, $d, TMP_4, waveTable = nil;
 if (m == null) m = nil;
       waveTable = [];
-        ($c = ($d = ($range(0, ($rb_minus($scope.get('SAMPLES_PER_CYCLE'), 1)), false))).$each, $c.$$p = (TMP_5 = function(n){var self = TMP_5.$$s || this, $e, $f, TMP_6, level = nil;
+        ($c = ($d = ($range(0, ($rb_minus($scope.get('SAMPLES_PER_CYCLE'), 1)), false))).$each, $c.$$p = (TMP_4 = function(n){var self = TMP_4.$$s || this, $e, $f, TMP_5, level = nil;
 if (n == null) n = nil;
         level = 0;
-          ($e = ($f = ($range(1, ($rb_times(m, 2)), false))).$each, $e.$$p = (TMP_6 = function(k){var self = TMP_6.$$s || this;
+          ($e = ($f = ($range(1, ($rb_times(m, 2)), false))).$each, $e.$$p = (TMP_5 = function(k){var self = TMP_5.$$s || this;
 if (k == null) k = nil;
-          return level = $rb_plus(level, $rb_times(amp, f.$call(n, k)))}, TMP_6.$$s = self, TMP_6.$$arity = 1, TMP_6), $e).call($f);
-          return waveTable['$[]='](n, level);}, TMP_5.$$s = self, TMP_5.$$arity = 1, TMP_5), $c).call($d);
-        return waveTables['$[]='](m, waveTable);}, TMP_4.$$s = self, TMP_4.$$arity = 1, TMP_4), $a).call($b);
-    }, TMP_7.$$arity = 3);
+          return level = $rb_plus(level, $rb_times(amp, f.$call(n, k)))}, TMP_5.$$s = self, TMP_5.$$arity = 1, TMP_5), $e).call($f);
+          return waveTable['$[]='](n, level);}, TMP_4.$$s = self, TMP_4.$$arity = 1, TMP_4), $c).call($d);
+        return waveTables['$[]='](m, waveTable);}, TMP_3.$$s = self, TMP_3.$$arity = 1, TMP_3), $a).call($b);
+    }, TMP_6.$$arity = 3);
 
-    Opal.defn(self, '$generatefreqTable', TMP_9 = function ːgeneratefreqTable() {
-      var $a, $b, TMP_8, self = this;
+    Opal.defn(self, '$generatefreqTable', TMP_8 = function ːgeneratefreqTable() {
+      var $a, $b, TMP_7, self = this;
 
-      return ($a = ($b = ($range(0, 11, false))).$each, $a.$$p = (TMP_8 = function(i){var self = TMP_8.$$s || this, n = nil, cent = nil, hz = nil;
+      return ($a = ($b = ($range(0, 11, false))).$each, $a.$$p = (TMP_7 = function(i){var self = TMP_7.$$s || this, n = nil, cent = nil, hz = nil;
         if (self.freqTableC4toB4 == null) self.freqTableC4toB4 = nil;
 if (i == null) i = nil;
       n = $rb_plus(i, 60);
         cent = $rb_minus(($rb_times(n, 100)), 6900);
         hz = $rb_times(440.0, ((2.0)['$**'](($rb_divide(cent, 1200.0)))));
-        return self.freqTableC4toB4['$[]='](i, $rb_divide($rb_times(hz, $scope.get('CYCLE_RESOLUTION')), $scope.get('SAMPLING_RATE')));}, TMP_8.$$s = self, TMP_8.$$arity = 1, TMP_8), $a).call($b);
-    }, TMP_9.$$arity = 0);
+        return self.freqTableC4toB4['$[]='](i, $rb_divide($rb_times(hz, $scope.get('CYCLE_RESOLUTION')), $scope.get('SAMPLING_RATE')));}, TMP_7.$$s = self, TMP_7.$$arity = 1, TMP_7), $a).call($b);
+    }, TMP_8.$$arity = 0);
 
-    return (Opal.defn(self, '$updateFreq', TMP_10 = function ːupdateFreq() {
+    return (Opal.defn(self, '$updateFreq', TMP_9 = function ːupdateFreq() {
       var $a, self = this, noteNumber = nil, base = nil;
 
       noteNumber = $rb_minus($rb_plus(self.noteNumber, self.courseTune), 64);
@@ -122,7 +117,7 @@ if (i == null) i = nil;
         } else {
         return nil
       };
-    }, TMP_10.$$arity = 0), nil) && 'updateFreq';
+    }, TMP_9.$$arity = 0), nil) && 'updateFreq';
   })($scope.base, null);
   return $gvars.synth = $scope.get('Synth').$new();
 })(Opal);
