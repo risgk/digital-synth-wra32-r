@@ -19,10 +19,7 @@ function onAudioProcess(event) {
   var bufferL = event.outputBuffer.getChannelData(0);
   var bufferR = event.outputBuffer.getChannelData(1);
   for (var i = 0; i < BUFFER_SIZE; i++) {
-    var b = Opal.gvars.synth.$clock();
-    var c = b.valueOf();
-    var d = (c - 0.5) / 5.0;
-    bufferL[i] = bufferR[i] = d;
+    bufferL[i] = bufferR[i] = (Opal.gvars.synth.$clock().valueOf() - 0.5) / 5.0;
   }
 }
 scriptProcessor.onaudioprocess = onAudioProcess;
